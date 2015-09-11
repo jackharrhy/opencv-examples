@@ -1,0 +1,38 @@
+#!/usr/bin/python2
+import numpy as np
+import cv2
+from matplotlib import pyplot as plt
+
+
+original = cv2.imread('test.png')
+
+hsv = cv2.cvtColor(original, cv2.COLOR_BGR2HSV)
+
+lower_target = np.array([72,75,75])
+higher_target = np.array([100,255,255])
+
+mask = cv2.inRange(hsv, lower_target, higher_target)
+cyan = cv2.bitwise_and(original,original, mask=mask)
+
+lower_target = np.array([0,0,51])
+higher_target = np.array([0,0,255])
+mask = cv2.inRange(hsv, lower_target, higher_target)
+pink = cv2.bitwise_and(original,original, mask=mask)
+
+mod = np.add(cyan, pink)
+
+cv2.imshow('original', original)
+
+print(hsv[0,0])
+def handleMouse(event,x,y,flags,param):
+    print(hsv[y,x])
+
+cv2.imshow('hsv', hsv)
+cv2.setMouseCallback('hsv',handleMouse)
+cv2.moveWindow('hsv', 768,576)
+
+cv2.imshow('mod', mod)
+cv2.moveWindow('mod', 768,0)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()

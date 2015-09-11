@@ -1,0 +1,11 @@
+#!/usr/bin/python2
+import numpy as np
+import cv2
+from matplotlib import pyplot as plt
+
+testImg = cv2.imread('test.png',1)
+testImgFixed = testImg[:,:,::-1]
+
+plt.imshow(testImgFixed, cmap = 'gray', interpolation = 'bicubic')
+plt.xticks([]), plt.yticks([])
+plt.show()

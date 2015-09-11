@@ -1,0 +1,43 @@
+#!/usr/bin/python2
+import numpy as np
+import cv2
+from matplotlib import pyplot as plt
+
+cap = cv2.VideoCapture(0)
+ret,frame = cap.read()
+
+# H: [0,179]
+# S: [0,255]
+# V: [0.255]
+
+while(True):
+    ret, frame = cap.read()
+
+    if ret:
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+        lower_target = np.array([72,75,75])
+        higher_target = np.array([600,255,255])
+
+        mask = cv2.inRange(hsv, lower_target, higher_target)
+
+        res = cv2.bitwise_and(frame,frame, mask=mask)
+
+        cv2.imshow('frame', frame)
+
+        cv2.imshow('hsv', hsv)
+        cv2.moveWindow('hsv', 640,0)
+
+        cv2.imshow('mask', mask)
+        cv2.moveWindow('mask', 0,480)
+
+        cv2.imshow('res', res)
+        cv2.moveWindow('res', 640,480)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    else:
+        break
+
+cap.release()
+cv2.destroyAllWindows()
